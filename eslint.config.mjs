@@ -1,6 +1,7 @@
 import globals from 'globals';
 import pluginJs from '@eslint/js';
 import tsPlugin from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
 
 export default [
   {
@@ -17,11 +18,19 @@ export default [
   },
   {
     files: ['**/*.ts'],
-    languageOptions: { sourceType: 'module', globals: globals.node },
+    languageOptions: {
+      parser: tsParser,
+      sourceType: 'module',
+      globals: globals.node,
+    },
     plugins: { '@typescript-eslint': tsPlugin },
     rules: {
       ...tsPlugin.configs.recommended.rules,
       '@typescript-eslint/ban-ts-comment': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
+        { argsIgnorePattern: '^_' },
+      ],
     },
   },
 ];
