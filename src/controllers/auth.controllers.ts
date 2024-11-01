@@ -45,10 +45,11 @@ export const signup: RequestHandler = catchAsync(
       body: verifyEmailTemplate(verificationCode),
     });
     // send response to client--
+    const { password: _password, ...userDataWithPass } = newUser.toObject();
     res.status(httpStatus.CREATED).json({
       success: true,
       message: 'user created successfully',
-      data: newUser,
+      data: userDataWithPass,
     });
   },
 );
@@ -75,6 +76,31 @@ export const verifyEmail: RequestHandler = catchAsync(
     res.status(httpStatus.OK).json({
       success: true,
       message: 'Email verified successfully',
+    });
+  },
+);
+
+export const signin: RequestHandler = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email, password } = req.body;
+    // check if user exists--
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw next(new AppError(httpStatus.BAD_REQUEST, 'Invalid credentials'));
+    }
+    // compare the password--
+    const isMatch = await bcryptjs.compare(password, user.password);
+    if (!isMatch) {
+      throw next(new AppError(httpStatus.BAD_REQUEST, 'Invalid credentials'));
+    }
+    // create cookie--
+    createCookie(res, user._id);
+    // send response to client--
+    const { password: _password, ...userDataWithPass } = user.toObject();
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'user logged in successfully',
+      data: userDataWithPass,
     });
   },
 );

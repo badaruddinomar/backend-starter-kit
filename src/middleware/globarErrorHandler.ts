@@ -1,3 +1,4 @@
+import config from '../config';
 import AppError from '../utils/AppError';
 import { Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 
@@ -34,6 +35,7 @@ const globalErrorHandler: ErrorRequestHandler = (
   res.status(err.statusCode).json({
     success: false,
     message: err.message,
+    stack: config.node_env === 'development' ? err?.stack : null,
   });
 };
 export default globalErrorHandler;
