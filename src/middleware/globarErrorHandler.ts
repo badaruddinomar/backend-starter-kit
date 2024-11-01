@@ -31,11 +31,10 @@ const globalErrorHandler: ErrorRequestHandler = (
     const message = 'Json web token expired';
     err = next(new AppError(400, message));
   }
-
   res.status(err.statusCode).json({
     success: false,
     message: err.message,
-    stack: config.node_env === 'development' ? err?.stack : null,
+    stack: config.node_env === 'development' ? err.stack : null,
   });
 };
 export default globalErrorHandler;

@@ -139,3 +139,31 @@ export const forgotPassword: RequestHandler = catchAsync(
     });
   },
 );
+
+export const resetPassword: RequestHandler = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { password } = req.body;
+    const { token } = req.query;
+    // check if token is valid--
+    const user = await User.findOne({
+      forgotPasswordToken: token,
+      forgotPasswordTokenExpire: { $gt: Date.now() },
+    });
+    if (!user) {
+      throw next(new AppError(httpStatus.BAD_REQUEST, 'Invalid token'));
+    }
+    // hash password--
+    const salt = await bcryptjs.genSalt(10);
+    const hashedPassword = await bcryptjs.hash(password, salt);
+    // update password--
+    user.password = hashedPassword;
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordTokenExpire = undefined;
+    await user.save();
+    // send response to client--
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Password reset successfully',
+    });
+  },
+);
