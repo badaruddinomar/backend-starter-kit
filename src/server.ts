@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import config from './config';
 import notFound from './middleware/notFound';
 import globalErrorHandler from './middleware/globarErrorHandler';
+import authRoutes from './routes/auth.routes';
 
 const app: Application = express();
 
@@ -26,15 +27,15 @@ process.on('uncaughtException', (err) => {
 
 // mongodb connection--
 mongoose
-  .connect(config.mongo_uri ?? '')
+  .connect(config.mongo_uri)
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.log(err));
 
 // routes--
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.send('Hello World!');
 });
-
+app.use('/api/v1/auth', authRoutes);
 // not found middleware
 app.use(notFound);
 app.use(globalErrorHandler);
