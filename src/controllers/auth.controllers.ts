@@ -27,26 +27,54 @@ export const signup: RequestHandler = catchAsync(
       password: hashedPassword,
     });
     // create verify token--
-    const verificationToken = Math.floor(
+    const verificationCode = Math.floor(
       100000 + Math.random() * 900000,
     ).toString();
-    newUser.verifyToken = verificationToken;
-    newUser.verifyTokenExpire = new Date(
-      new Date().getTime() + 24 * 60 * 60 * 1000,
-    ); // 24 hours
+    newUser.verifyCode = verificationCode;
+    newUser.verifyCodeExpire = new Date(new Date().getTime() + 15 * 60 * 1000);
+
+    // save user--
     await newUser.save();
+
     // set cookie--
     createCookie(res, newUser._id);
     // send verification email--
     await sendEmail({
       reciverEmail: newUser.email,
       subject: 'Verify your email',
-      body: verifyEmailTemplate(verificationToken),
+      body: verifyEmailTemplate(verificationCode),
     });
+    // send response to client--
     res.status(httpStatus.CREATED).json({
       success: true,
       message: 'user created successfully',
       data: newUser,
+    });
+  },
+);
+
+export const verifyEmail: RequestHandler = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { verificationCode } = req.body;
+    // check if verification code is valid--
+    const user = await User.findOne({
+      verifyCode: verificationCode,
+      verifyCodeExpire: { $gt: Date.now() },
+    });
+
+    // if not valid--
+    if (!user) {
+      throw next(new AppError(httpStatus.BAD_REQUEST, 'Invalid code'));
+    }
+    // if valid--
+    user.isVerified = true;
+    user.verifyCode = undefined;
+    user.verifyCodeExpire = undefined;
+    await user.save();
+    // send response to client--
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Email verified successfully',
     });
   },
 );

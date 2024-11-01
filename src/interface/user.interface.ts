@@ -4,9 +4,9 @@ export interface IUser {
   email: string;
   password: string;
   role?: string;
-  verifyToken?: string;
+  verifyCode?: string;
   isVerified?: boolean;
-  verifyTokenExpire?: Date;
+  verifyCodeExpire?: Date;
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
   resetPasswordTokenExpire?: Date;
