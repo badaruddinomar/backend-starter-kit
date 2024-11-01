@@ -7,6 +7,9 @@ import httpStatus from 'http-status';
 import { createCookie } from '../utils/createCookie';
 import sendEmail from '../utils/sendEmail';
 import { verifyEmailTemplate } from '../emailTemplates/verifyEmailTemplate';
+import crypto from 'crypto';
+import { forgotPasswordEmailTemplate } from '../emailTemplates/forgotPassEmailTemplate';
+import config from '../config';
 
 export const signup: RequestHandler = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -101,6 +104,38 @@ export const signin: RequestHandler = catchAsync(
       success: true,
       message: 'user logged in successfully',
       data: userDataWithPass,
+    });
+  },
+);
+
+export const forgotPassword: RequestHandler = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { email } = req.body;
+    // check if user exists--
+    const user = await User.findOne({ email });
+    if (!user) {
+      throw next(new AppError(httpStatus.BAD_REQUEST, 'User not found'));
+    }
+    // create forgot password token--
+    const forgotPasswordToken = crypto.randomBytes(32).toString('hex');
+    user.forgotPasswordToken = forgotPasswordToken;
+    user.forgotPasswordTokenExpire = new Date(
+      new Date().getTime() + 15 * 60 * 1000,
+    );
+
+    await user.save();
+    // send verification email--
+    const resetUrl =
+      config.client_url + '/reset-password/?token=' + forgotPasswordToken;
+    await sendEmail({
+      reciverEmail: user.email,
+      subject: 'Reset your password',
+      body: forgotPasswordEmailTemplate(resetUrl),
+    });
+    // send response to client--
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'Password reset email sent successfully',
     });
   },
 );
