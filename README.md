@@ -164,7 +164,6 @@ POST /auth/verify-email
 - Description: Verify a user's email address.
 - Request Body:
 
-  - `email` (string, required): User's email address.
   - `verificationCode` (string, required): User's verification code.
 
 ```json
@@ -221,7 +220,6 @@ POST /auth/reset-password?token=your-token
 
 - Request Body:
 
-  - `email` (string, required): User's email address.
   - `password` (string, required): User's new password.
 
 ```json
