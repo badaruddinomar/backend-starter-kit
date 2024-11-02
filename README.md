@@ -215,15 +215,17 @@ POST /auth/reset-password?token=your-token
 ```
 
 - Description: Reset a user's password.
+- Request Parameters:
+
+  - `token` (string, required): User's password reset token.
+
 - Request Body:
 
   - `email` (string, required): User's email address.
   - `password` (string, required): User's new password.
-  - `forgotPasswordToken` (string, required): User's forgot password token.
 
 ```json
 {
-  "email": "XK5kM@example.com",
   "password": "newpassword123"
 }
 ```
