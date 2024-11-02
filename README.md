@@ -8,11 +8,13 @@ This project is an authentication system or you can say backend starter project 
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
 - [API Endpoints](#api-endpoints)
-  - [POST /signup](#post-signup)
-  - [POST /signin](#post-signin)
-  - [POST /verify-email](#get-verify-email)
-  - [POST /forgot-password](#post-forgot-password)
-  - [POST /reset-password](#post-reset-password)
+
+  - [POST /auth/signup](#signup)
+  - [POST /auth/signin](#signin)
+  - [POST /auth/verify-email](#verify-email)
+  - [POST /auth/forgot-password](#forgot-password)
+  - [POST /auth/reset-password?token=token](#reset-password)
+
 - [Error Handling](#error-handling)
 - [Examples](#examples)
 - [License](#license)
@@ -42,8 +44,6 @@ Clone the repository and install the dependencies:
 git clone https://github.com/badaruddinomar/backend-starter-kit.git .
 
 npm install
-
-npm run dev
 ```
 
 ### Create a .env file and add the following variables
@@ -65,9 +65,25 @@ SMPT_HOST=
 SMPT_PORT=
 ```
 
+### Run the server
+
+```bash
+npm run start:dev
+```
+
+### Api base url
+
+```bash
+ http://localhost:4000/api/v1
+```
+
 ## API Endpoints
 
-### POST /signup
+## Signup
+
+```json
+POST /auth/signup
+```
 
 - Description: Register a new user.
 - Request Body:
@@ -102,7 +118,11 @@ SMPT_PORT=
 }
 ```
 
-### POST /signin
+## Signin
+
+```json
+POST /auth/signin
+```
 
 - Description: Sign in a user.
 - Request Body:
@@ -135,7 +155,11 @@ SMPT_PORT=
 }
 ```
 
-### POST /verify-email
+## Verify Email
+
+```json
+POST /auth/verify-email
+```
 
 - Description: Verify a user's email address.
 - Request Body:
@@ -158,7 +182,11 @@ SMPT_PORT=
 }
 ```
 
-### POST /forgot-password
+## Forgot Password
+
+```json
+POST /auth/forgot-password
+```
 
 - Description: Send a password reset link to a user's email address.
 - Request Body:
@@ -180,7 +208,11 @@ SMPT_PORT=
 }
 ```
 
-### POST /reset-password?token=<token>
+## Reset Password
+
+```json
+POST /auth/reset-password?token=your-token
+```
 
 - Description: Reset a user's password.
 - Request Body:
@@ -220,7 +252,7 @@ SMPT_PORT=
 
 ```javascript
 axios
-  .post('http://localhost:5000/signup', {
+  .post('http://localhost:4000/api/v1/auth/signup', {
     email: 'user@example.com',
     password: 'StrongPassword123!',
     name: 'John Doe',
