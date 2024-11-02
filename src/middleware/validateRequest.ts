@@ -8,12 +8,13 @@ const validateRequest =
     const result = schema.safeParse(req.body);
 
     if (!result.success) {
+      const formattedErrors = result.error.errors.map((error) => {
+        return `${error.path.join('.')} ${error.message}`;
+      });
+
       res.status(httpStatus.BAD_REQUEST).json({
         success: false,
-        errors: result.error.errors.map((error) => ({
-          path: error.path.join('.'),
-          message: error.message,
-        })),
+        message: formattedErrors.join(', '),
       });
       return;
     }

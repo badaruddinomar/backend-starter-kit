@@ -21,6 +21,15 @@ const globalErrorHandler: ErrorRequestHandler = (
     const message = `Duplicate ${Object.keys(err.keyValue)} entered`;
     err = next(new AppError(400, message));
   }
+  // Mongoose validation error
+  if (err.name === 'ValidationError') {
+    const messages = Object.values(err.errors).map(
+      (val) => (val as { message: string }).message,
+    );
+    const message = `Validation error: ${messages.join('. ')}`;
+    err = next(new AppError(400, message));
+  }
+
   // wrong jwt error--
   if (err.name === 'JsonWebTokenError') {
     const message = `json web token is invalid try again`;
