@@ -1,11 +1,16 @@
 import { Response } from 'express';
 import jwt from 'jsonwebtoken';
 import config from '../config';
+import { IUser } from '../interface/user.interface';
 
-export const createCookie = (res: Response, userId: string) => {
-  const token = jwt.sign({ userId }, config.jwt_secret, {
-    expiresIn: '7d',
-  });
+export const createCookie = (res: Response, user: IUser) => {
+  const token = jwt.sign(
+    { userId: user._id, email: user.email, role: user.role },
+    config.jwt_secret,
+    {
+      expiresIn: '7d',
+    },
+  );
 
   res.cookie('token', token, {
     httpOnly: true,

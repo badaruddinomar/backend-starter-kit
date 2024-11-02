@@ -40,7 +40,7 @@ export const signup: RequestHandler = catchAsync(
     await newUser.save();
 
     // set cookie--
-    createCookie(res, newUser._id);
+    createCookie(res, newUser);
     // send verification email--
     await sendEmail({
       reciverEmail: newUser.email,
@@ -97,7 +97,7 @@ export const signin: RequestHandler = catchAsync(
       throw next(new AppError(httpStatus.BAD_REQUEST, 'Invalid credentials'));
     }
     // create cookie--
-    createCookie(res, user._id);
+    createCookie(res, user);
     // send response to client--
     const { password: _password, ...userDataWithPass } = user.toObject();
     res.status(httpStatus.OK).json({

@@ -3,7 +3,7 @@ export interface IUser {
   name: string;
   email: string;
   password: string;
-  role?: string;
+  role?: 'user' | 'admin';
   verifyCode?: string;
   isVerified?: boolean;
   verifyCodeExpire?: Date;
