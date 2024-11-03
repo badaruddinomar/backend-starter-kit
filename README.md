@@ -14,6 +14,7 @@ This project is an authentication system or you can say backend starter project 
   - [POST /auth/verify-email](#verify-email)
   - [POST /auth/forgot-password](#forgot-password)
   - [POST /auth/reset-password?token=token](#reset-password)
+  - [POST /auth/logout](#logout)
 
 - [Error Handling](#error-handling)
 - [Examples](#examples)
@@ -234,6 +235,23 @@ POST /auth/reset-password?token=your-token
 {
   "success": true,
   "message": "Password reset successfully"
+}
+```
+
+## logout
+
+```json
+POST /auth/logout
+```
+
+- Description: Log out a user.
+
+### Example Response:
+
+```json
+{
+  "success": true,
+  "message": "User logged out successfully"
 }
 ```
 

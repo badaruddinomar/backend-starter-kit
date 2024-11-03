@@ -167,3 +167,13 @@ export const resetPassword: RequestHandler = catchAsync(
     });
   },
 );
+
+export const logout: RequestHandler = catchAsync(
+  async (req: Request, res: Response) => {
+    res.clearCookie('token');
+    res.status(httpStatus.OK).json({
+      success: true,
+      message: 'user logged out successfully',
+    });
+  },
+);
