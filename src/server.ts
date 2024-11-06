@@ -8,6 +8,7 @@ import config from './config';
 import notFound from './middleware/notFound';
 import globalErrorHandler from './middleware/globarErrorHandler';
 import authRoutes from './routes/auth.routes';
+import fileUpload from 'express-fileupload';
 
 const app: Application = express();
 
@@ -17,6 +18,7 @@ app.use(cors());
 app.use(helmet());
 app.use(compression());
 app.use(cookieParser());
+app.use(fileUpload({ useTempFiles: true, tempFileDir: '/tmp/' }));
 
 // handling uncaught exceptions--
 process.on('uncaughtException', (err) => {

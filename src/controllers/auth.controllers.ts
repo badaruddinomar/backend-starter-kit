@@ -10,6 +10,11 @@ import { verifyEmailTemplate } from '../emailTemplates/verifyEmailTemplate';
 import crypto from 'crypto';
 import { forgotPasswordEmailTemplate } from '../emailTemplates/forgotPassEmailTemplate';
 import config from '../config';
+import { UploadedFile } from 'express-fileupload';
+import {
+  uploadMultipleImages,
+  uploadSingleImage,
+} from '../utils/cloudinaryImageUpload';
 
 export const signup: RequestHandler = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {

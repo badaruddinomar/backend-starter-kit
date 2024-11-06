@@ -16,4 +16,10 @@ export default {
   smpt_mail: process.env.SMPT_MAIL as string,
   smpt_password: process.env.SMPT_PASSWORD as string,
   smpt_service: process.env.SMPT_SERVICE as string,
+
+  cloudinary: {
+    cloud_name: process.env.CLOUD_NAME as string,
+    api_key: process.env.API_KEY as string,
+    api_secret: process.env.API_SECRET as string,
+  },
 };
