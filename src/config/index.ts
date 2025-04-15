@@ -11,11 +11,11 @@ export default {
   node_env: process.env.NODE_ENV,
   client_url: process.env.CLIENT_URL,
 
-  smpt_host: process.env.SMPT_HOST as string,
-  smpt_port: process.env.SMPT_PORT,
-  smpt_mail: process.env.SMPT_MAIL as string,
-  smpt_password: process.env.SMPT_PASSWORD as string,
-  smpt_service: process.env.SMPT_SERVICE as string,
+  smtp_host: process.env.SMTP_HOST as string,
+  smtp_port: process.env.SMTP_PORT,
+  smtp_mail: process.env.SMTP_MAIL as string,
+  smtp_password: process.env.SMTP_PASSWORD as string,
+  smtp_service: process.env.SMTP_SERVICE as string,
 
   cloudinary: {
     cloud_name: process.env.CLOUD_NAME as string,

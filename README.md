@@ -59,11 +59,11 @@ NODE_ENV = development
 JWT_SECRET =
 JWT_EXPIRATION =
 
-SMPT_SERVICE=gmail
-SMPT_MAIL=yourmail@gmail.com
-SMPT_PASSWORD=
-SMPT_HOST=
-SMPT_PORT=
+SMTP_SERVICE=gmail
+SMTP_MAIL=yourmail@gmail.com
+SMTP_PASSWORD=
+SMTP_HOST=
+SMTP_PORT=
 ```
 
 ### Run the server

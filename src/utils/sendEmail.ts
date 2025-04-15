@@ -8,16 +8,16 @@ interface IEmailOptions {
 }
 const sendEmail = async (options: IEmailOptions) => {
   const transporter = nodemailer.createTransport({
-    // host: config.smpt_host,
-    // port: config.smpt_port,
-    service: config.smpt_service,
+    // host: config.smtp_host,
+    // port: config.smtp_port,
+    service: config.smtp_service,
     auth: {
-      user: config.smpt_mail,
-      pass: config.smpt_password,
+      user: config.smtp_mail,
+      pass: config.smtp_password,
     },
   });
   const mailOptions = {
-    from: config.smpt_mail,
+    from: config.smtp_mail,
     to: options.reciverEmail,
     subject: options.subject,
     html: options.body,

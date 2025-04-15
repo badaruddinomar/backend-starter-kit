@@ -5,35 +5,34 @@ import User from '../models/user.model';
 import config from '../config';
 import httpStatus from 'http-status';
 import { IUser } from '../interface/user.interface';
-export const isAuthenticatedUser = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const { token } = req.cookies;
+import catchAsync from '../utils/catchAsync';
+export const isAuthenticatedUser = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { token } = req.cookies;
 
-  if (!token) {
-    throw next(
-      new AppError(
-        httpStatus.UNAUTHORIZED,
-        'Please login to access this resource.',
-      ),
-    );
-  }
+    if (!token) {
+      throw next(
+        new AppError(
+          httpStatus.UNAUTHORIZED,
+          'Please login to access this resource.',
+        ),
+      );
+    }
 
-  const decodedData = jwt.verify(token, config.jwt_secret) as JwtPayload;
-  const user = await User.findById(decodedData?.userId);
-  if (!user) {
-    throw next(
-      new AppError(
-        httpStatus.UNAUTHORIZED,
-        'Please login to access this resource.',
-      ),
-    );
-  }
-  req.user = user as IUser;
-  next();
-};
+    const decodedData = jwt.verify(token, config.jwt_secret) as JwtPayload;
+    const user = await User.findById(decodedData?.userId);
+    if (!user) {
+      throw next(
+        new AppError(
+          httpStatus.UNAUTHORIZED,
+          'Please login to access this resource.',
+        ),
+      );
+    }
+    req.user = user as IUser;
+    next();
+  },
+);
 
 // Authorize Roles--
 export const authorizeRoles = (...roles: string[]) => {
