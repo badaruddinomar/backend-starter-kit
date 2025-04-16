@@ -2,6 +2,7 @@ import express, { Application } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import morgan from 'morgan';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import config from './config';
@@ -21,6 +22,7 @@ app.use(compression());
 app.use(cookieParser());
 app.use(fileUpload({ useTempFiles: true, tempFileDir: '/tmp/' }));
 app.use(rateLimitingHandler(100, 15 * 60 * 1000));
+app.use(morgan('dev'));
 
 // handling uncaught exceptions--
 process.on('uncaughtException', (err) => {
