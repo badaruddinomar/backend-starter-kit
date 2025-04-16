@@ -9,6 +9,7 @@ import notFound from './middleware/notFound';
 import globalErrorHandler from './middleware/globarErrorHandler';
 import authRoutes from './routes/auth.routes';
 import fileUpload from 'express-fileupload';
+import { rateLimitingHandler } from './middleware/rateLimitingHandler';
 
 const app: Application = express();
 
@@ -19,6 +20,7 @@ app.use(helmet());
 app.use(compression());
 app.use(cookieParser());
 app.use(fileUpload({ useTempFiles: true, tempFileDir: '/tmp/' }));
+app.use(rateLimitingHandler(100, 15 * 60 * 1000));
 
 // handling uncaught exceptions--
 process.on('uncaughtException', (err) => {
